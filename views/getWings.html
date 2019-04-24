@@ -1,0 +1,61 @@
+<%
+from bottle import request
+cityName=""
+#get list of wing types
+wingResult=c.execute("SELECT * FROM wing")
+city=request.forms.get('cityid')
+
+%>
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <title>Jeremy's Wing Finder</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/static/wings.min.css" />
+	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+	<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
+	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <!--better mobile size-->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+    <div data-role="page" data-theme="a">
+        <div data-role="header" data-position="fixed">
+            <h1>Welcome to Jeremy's Wing Finder</h1>
+        </div>
+        <div data-role="content" data-theme="a">
+            <h2>Please select a type of wing</h2>
+            <form action="/results2"
+                method="post">
+                    <fieldset>
+                    <p>The city you have chosen is {{city}}</p>
+                    <label>Wing Choice</label>
+                    <select name="wingid">
+                        %for record in wingResult:
+                        <option value="{{record[1]}}">{{record[1]}}</option>
+                        %end
+                    </select>
+                    <p>Confirm city or go back to change</p>
+                    <select name ="cityid">
+                        <option value="{{city}}">{{city}}</option>
+                    </select>
+                    <button type="button"
+                            onclick="document.location.href = '/'">
+                        Click here to go back
+                    </button>
+                    <p>Touch below to get your results!</p>
+                    <button type="submit">
+                        Click to get results
+                    </button>
+                </fieldset>
+            </form>
+        </div>
+        <div data-role="footer" id="footer">
+            Jeremy Morgan IUPUI 2018
+        </div>
+    </div>
+</body>
+</html>
